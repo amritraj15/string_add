@@ -13,5 +13,9 @@ RSpec.describe StringCalculator, type: :service do
     it "Returns the sum of two numbers in string" do
       expect(StringCalculator.add("1,2")).to eq(3)
     end
+
+    it "Returns the sum of numbers in string" do
+      expect(StringCalculator.add("1,2,3")).to eq(6)
+    end
   end
 end
