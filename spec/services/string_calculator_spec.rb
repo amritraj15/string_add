@@ -28,6 +28,10 @@ RSpec.describe StringCalculator, type: :service do
 
     it "Raises an error for negative numbers in string" do
       expect { StringCalculator.add("1,-2,3") }.to raise_error("negative numbers are not allowed: -2")
-    end    
+    end 
+    
+    it "Raises an error for multiple negative numbers in string" do
+      expect { StringCalculator.add("1,-2,-3") }.to raise_error("negative numbers are not allowed: -2, -3")
+    end
   end
 end
