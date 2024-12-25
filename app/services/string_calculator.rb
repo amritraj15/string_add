@@ -16,10 +16,16 @@ class StringCalculator
   # addition of the numbers
   def add
     return 0 if numbers.empty?
-    return numbers.to_i if single_number?
+    return numbers.to_i if single_number? # check input is single number then just return it
 
-    number_list = extract_numbers
-    number_list.sum
+    begin
+      number_list = extract_numbers # extract numbers from string input
+      check_negatives(number_list)
+      number_list.sum
+    rescue StandardError => e
+      Rails.logger.error("Exception caught #{e.message}")
+      raise e
+    end
   end
 
   private
@@ -48,5 +54,11 @@ class StringCalculator
 
     custom_delimiter = numbers.match(%r{//(.)\n})[1]
     Regexp.escape(custom_delimiter)
+  end
+
+  # check is there any negative numbers are there or not
+  def check_negatives(number_list)
+    negatives = number_list.select { |n| n < 0 }
+    raise "negative numbers are not allowed: #{negatives.join(', ')}" unless negatives.empty?
   end
 end
