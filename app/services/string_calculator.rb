@@ -16,10 +16,10 @@ class StringCalculator
   # addition of the numbers
   def add
     return 0 if numbers.empty?
-	return numbers.to_i if single_number?
+    return numbers.to_i if single_number?
 
-	number_list = extract_numbers 
-	number_list.sum
+    number_list = extract_numbers
+    number_list.sum
   end
 
   private
@@ -28,11 +28,25 @@ class StringCalculator
     numbers.length == 1
   end
 
+  # check number starts with // delimeter or not
+  def custom_delimiter?
+    numbers.start_with?('//')
+  end
+
+  # extracting number if it starts with custom delimerter and includes multiple other delimeters too
   def extract_numbers
-	numbers.split(/#{delimiter}/).map(&:to_i)
+    if custom_delimiter?
+      _, number_string = numbers.split("\n", 2)
+    else
+      number_string = numbers
+    end
+    number_string.split(/#{delimiter}/).map(&:to_i)
   end
 
   def delimiter
-	return /,|\n/ 
+    return /,|\n/ unless custom_delimiter?
+
+    custom_delimiter = numbers.match(%r{//(.)\n})[1]
+    Regexp.escape(custom_delimiter)
   end
 end
